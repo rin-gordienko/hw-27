@@ -1,13 +1,26 @@
 import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+import DatePickerFunc from "./DatePickerFunc";
 
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { Grid } from "@mui/material";
+import Grid from "@mui/material/Grid";
+
+const phoneRegExp = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g;
+
+const schema = yup.object({
+  email: yup.string().email().required("Please, enter correct email"),
+  phoneNumber: yup
+    .string()
+    .matches(phoneRegExp, "Please, enter a correct number"),
+});
 
 const Form = () => {
-  const { handleSubmit, control } = useForm();
+  const { handleSubmit, control } = useForm({ resolver: yupResolver(schema) });
 
   const onSubmit = (data) => {
     console.log(data);
@@ -24,9 +37,9 @@ const Form = () => {
             rules={{ required: "The field is required" }}
             render={({ field, fieldState: { error } }) => (
               <TextField
+                {...field}
                 required
                 fullWidth
-                {...field}
                 label="First name"
                 variant="outlined"
                 error={!!error}
@@ -86,7 +99,8 @@ const Form = () => {
           />
         </Grid>
         <Grid item xs={5}>
-          <Controller
+          <DatePickerFunc />
+          {/* <Controller
             control={control}
             name="birthDate"
             rules={{ required: "The field is required" }}
@@ -105,7 +119,7 @@ const Form = () => {
                 }}
               />
             )}
-          />
+          /> */}
         </Grid>
         <Grid item xs={6}>
           <Controller
@@ -139,7 +153,7 @@ const Form = () => {
                 variant="outlined"
                 error={!!error}
                 helperText={error?.message}
-              />
+              ></TextField>
             )}
           />
         </Grid>
