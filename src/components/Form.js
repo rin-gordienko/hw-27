@@ -10,10 +10,13 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
-const phoneRegExp = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g;
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 const schema = yup.object({
-  email: yup.string().email().required("Please, enter correct email"),
+  email: yup
+    .string()
+    .email("Please, enter correct email"),
   phoneNumber: yup
     .string()
     .matches(phoneRegExp, "Please, enter a correct number"),
